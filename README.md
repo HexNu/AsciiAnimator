@@ -1,2 +1,2 @@
 # AsciiAnimator
-Animate ascii file in a zip-folder (.aaz file extension)
+Animate ascii files in a zip-folder (.aaz file extension)
