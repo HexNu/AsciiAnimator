@@ -5,9 +5,7 @@ import java.awt.event.ActionListener;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
-import java.io.IOException;
 import java.util.List;
-import java.util.Properties;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.Timer;
@@ -20,12 +18,17 @@ import nu.hex.asciianimator.io.AazFileReader;
 public class MainWindow extends javax.swing.JFrame {
 
     private static final String START = "Start";
-    private static final String STOP = "Stop";
+    private static final String PAUSE = "Pause";
     private static final String INFO_TEXT_1 = "Use Open File to load an ASCII Animation file (aaz)";
     private static final String INFO_TEXT_2 = "Click Start to run animation";
+    private static final String HELP_TEXT = "Help\n\nThe AAZ Filetype\n"
+            + "  The aaz filetype is a zipped archive containing text-files.\n"
+            + "The order displayed in the animation is governed by the filenames\n"
+            + "in the archive."
+            + "";
     private List<String> strings = null;
     private String path;
-    private int tenths_of_second = 5;
+    private int tenths_of_second = 7;
     private final int tenth_of_second = 100;
     private int currentImage = 0;
     private Timer timer = null;
@@ -38,6 +41,7 @@ public class MainWindow extends javax.swing.JFrame {
             @Override
             public void actionPerformed(ActionEvent e) {
                 animate();
+                togglePrevNextButtons();
                 repaint();
             }
         });
@@ -48,9 +52,8 @@ public class MainWindow extends javax.swing.JFrame {
             if (currentImage == strings.size()) {
                 currentImage = 0;
             }
-            String image = strings.get(currentImage);
+            String image = strings.get(currentImage++);
             updateDisplay(image);
-            currentImage++;
         }
     }
 
@@ -59,7 +62,7 @@ public class MainWindow extends javax.swing.JFrame {
     }
 
     private static String getStopToolTip() {
-        return STOP + " animation.";
+        return PAUSE + " animation.";
     }
 
     /**
@@ -74,9 +77,12 @@ public class MainWindow extends javax.swing.JFrame {
         programLabel = new javax.swing.JLabel();
         jPanel1 = new javax.swing.JPanel();
         fileChooserButton = new javax.swing.JButton();
-        settingsButton = new javax.swing.JButton();
-        startStopButton = new javax.swing.JButton();
-        frameLabel = new javax.swing.JLabel();
+        optionsButton = new javax.swing.JButton();
+        startPauseButton = new javax.swing.JButton();
+        helpButton = new javax.swing.JButton();
+        nextButton = new javax.swing.JButton();
+        stopButton = new javax.swing.JButton();
+        prevButton = new javax.swing.JButton();
         displayScrollPane = new javax.swing.JScrollPane();
         displayArea = new javax.swing.JTextArea();
 
@@ -93,15 +99,46 @@ public class MainWindow extends javax.swing.JFrame {
             }
         });
 
-        settingsButton.setText("Settings");
-        settingsButton.setEnabled(false);
+        optionsButton.setText("Options");
+        optionsButton.setEnabled(false);
 
-        startStopButton.setText(START);
-        startStopButton.setToolTipText(getStartToolTip());
-        startStopButton.setEnabled(false);
-        startStopButton.addActionListener(new java.awt.event.ActionListener() {
+        startPauseButton.setText(START);
+        startPauseButton.setToolTipText(getStartToolTip());
+        startPauseButton.setEnabled(false);
+        startPauseButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                startStopButtonActionPerformed(evt);
+                startPauseButtonActionPerformed(evt);
+            }
+        });
+
+        helpButton.setText("Help");
+        helpButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                helpButtonActionPerformed(evt);
+            }
+        });
+
+        nextButton.setText("Next");
+        nextButton.setEnabled(false);
+        nextButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                nextButtonActionPerformed(evt);
+            }
+        });
+
+        stopButton.setText("Stop");
+        stopButton.setEnabled(false);
+        stopButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                stopButtonActionPerformed(evt);
+            }
+        });
+
+        prevButton.setText("Prev");
+        prevButton.setEnabled(false);
+        prevButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                prevButtonActionPerformed(evt);
             }
         });
 
@@ -113,25 +150,32 @@ public class MainWindow extends javax.swing.JFrame {
                 .addContainerGap()
                 .addComponent(fileChooserButton, javax.swing.GroupLayout.PREFERRED_SIZE, 140, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(settingsButton, javax.swing.GroupLayout.PREFERRED_SIZE, 140, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(optionsButton, javax.swing.GroupLayout.PREFERRED_SIZE, 140, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(frameLabel, javax.swing.GroupLayout.DEFAULT_SIZE, 314, Short.MAX_VALUE)
+                .addComponent(helpButton, javax.swing.GroupLayout.PREFERRED_SIZE, 140, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 365, Short.MAX_VALUE)
+                .addComponent(prevButton, javax.swing.GroupLayout.PREFERRED_SIZE, 80, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(startStopButton, javax.swing.GroupLayout.PREFERRED_SIZE, 140, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addComponent(startPauseButton, javax.swing.GroupLayout.PREFERRED_SIZE, 80, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(stopButton, javax.swing.GroupLayout.PREFERRED_SIZE, 80, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(nextButton, javax.swing.GroupLayout.PREFERRED_SIZE, 80, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap())
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addContainerGap()
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(frameLabel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(fileChooserButton)
-                            .addComponent(settingsButton)
-                            .addComponent(startStopButton))
-                        .addGap(0, 0, Short.MAX_VALUE)))
-                .addContainerGap())
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(fileChooserButton)
+                    .addComponent(optionsButton)
+                    .addComponent(startPauseButton)
+                    .addComponent(helpButton)
+                    .addComponent(nextButton)
+                    .addComponent(stopButton)
+                    .addComponent(prevButton))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
         displayArea.setEditable(false);
@@ -168,33 +212,76 @@ public class MainWindow extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void fileChooserButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_fileChooserButtonActionPerformed
+        resetContent();
         importFile();
         updateDisplay(INFO_TEXT_2);
-        startStopButton.setEnabled(hasAnimationContent());
+        startPauseButton.setEnabled(hasAnimationContent());
+        stopButton.setEnabled(hasAnimationContent());
     }//GEN-LAST:event_fileChooserButtonActionPerformed
 
-    private void startStopButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_startStopButtonActionPerformed
-        toggleStartStop();
+    private void startPauseButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_startPauseButtonActionPerformed
+        togglePlayerButtons();
         toggleFileChooserButton();
-    }//GEN-LAST:event_startStopButtonActionPerformed
+    }//GEN-LAST:event_startPauseButtonActionPerformed
+
+    private void helpButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_helpButtonActionPerformed
+        if (displayArea.getText().equals(HELP_TEXT)) {
+            if (hasAnimationContent()) {
+                updateDisplay(strings.get(currentImage));
+            } else {
+                updateDisplay(INFO_TEXT_1);
+            }
+        } else {
+            updateDisplay(HELP_TEXT);
+            pauseAnimation();
+        }
+    }//GEN-LAST:event_helpButtonActionPerformed
+
+    private void stopButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_stopButtonActionPerformed
+        stopAnimation();
+    }//GEN-LAST:event_stopButtonActionPerformed
+
+    private void prevButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_prevButtonActionPerformed
+        showPreviousImage();
+    }//GEN-LAST:event_prevButtonActionPerformed
+
+    private void nextButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_nextButtonActionPerformed
+        showNextImage();
+    }//GEN-LAST:event_nextButtonActionPerformed
 
     private boolean hasAnimationContent() {
         return strings != null && !strings.isEmpty();
     }
-    private void toggleStartStop() {
-        if (startStopButton.getText().equals(STOP)) {
-            startStopButton.setText(START);
-            startStopButton.setToolTipText(getStartToolTip());
-            stopAnimation();
+
+    private void togglePlayerButtons() {
+        if (isPlaying()) {
+            startPauseButton.setText(START);
+            startPauseButton.setToolTipText(getStartToolTip());
+            pauseAnimation();
         } else {
-            startStopButton.setText(STOP);
-            startStopButton.setToolTipText(getStopToolTip());
+            startPauseButton.setText(PAUSE);
+            startPauseButton.setToolTipText(getStopToolTip());
             startAnimation();
+        }
+        togglePrevNextButtons();
+    }
+
+    private boolean isPlaying() {
+        return startPauseButton.getText().equals(PAUSE);
+    }
+
+    private void togglePrevNextButtons() {
+        if (isPlaying()) {
+            nextButton.setEnabled(false);
+            prevButton.setEnabled(false);
+        } else {
+            nextButton.setEnabled(currentImage < strings.size() - 1);
+            prevButton.setEnabled(currentImage > 0);
         }
     }
 
     private void toggleFileChooserButton() {
-        fileChooserButton.setEnabled(startStopButton.getText().equals(START));
+        fileChooserButton.setEnabled(startPauseButton.getText().equals(START));
     }
 
     public void openAnimatorWindow() {
@@ -227,11 +314,14 @@ public class MainWindow extends javax.swing.JFrame {
     private javax.swing.JTextArea displayArea;
     private javax.swing.JScrollPane displayScrollPane;
     private javax.swing.JButton fileChooserButton;
-    private javax.swing.JLabel frameLabel;
+    private javax.swing.JButton helpButton;
     private javax.swing.JPanel jPanel1;
+    private javax.swing.JButton nextButton;
+    private javax.swing.JButton optionsButton;
+    private javax.swing.JButton prevButton;
     private javax.swing.JLabel programLabel;
-    private javax.swing.JButton settingsButton;
-    private javax.swing.JButton startStopButton;
+    private javax.swing.JButton startPauseButton;
+    private javax.swing.JButton stopButton;
     // End of variables declaration//GEN-END:variables
 
     private void importFile() {
@@ -247,9 +337,28 @@ public class MainWindow extends javax.swing.JFrame {
         }
     }
 
+    private void resetContent() {
+        currentImage = 0;
+        if (hasAnimationContent()) {
+            strings.clear();
+        }
+    }
+
     private void updateDisplay(String text) {
         displayArea.setText(text);
         repaint();
+    }
+
+    private void showPreviousImage() {
+        currentImage = currentImage > 0 ? currentImage - 1 : 0;
+        togglePrevNextButtons();
+        updateDisplay(strings.get(currentImage));
+    }
+
+    private void showNextImage() {
+        currentImage = currentImage < strings.size() - 1 ? currentImage + 1 : strings.size() - 1;
+        togglePrevNextButtons();
+        updateDisplay(strings.get(currentImage));
     }
 
     private void startAnimation() {
@@ -258,11 +367,14 @@ public class MainWindow extends javax.swing.JFrame {
 
     private void stopAnimation() {
         timer.stop();
-        if (hasAnimationContent()) {
-            updateDisplay(INFO_TEXT_1);
-        } else {
-            updateDisplay(strings.get(0));
-        }
+        currentImage = 0;
+        updateDisplay(INFO_TEXT_1);
+        startPauseButton.setText(START);
+        startPauseButton.setToolTipText(getStartToolTip());
         toggleFileChooserButton();
+    }
+
+    private void pauseAnimation() {
+        timer.stop();
     }
 }

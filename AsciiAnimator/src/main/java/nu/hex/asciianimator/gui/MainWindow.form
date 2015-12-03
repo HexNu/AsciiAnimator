@@ -67,11 +67,18 @@
                   <EmptySpace max="-2" attributes="0"/>
                   <Component id="fileChooserButton" min="-2" pref="140" max="-2" attributes="0"/>
                   <EmptySpace max="-2" attributes="0"/>
-                  <Component id="settingsButton" min="-2" pref="140" max="-2" attributes="0"/>
+                  <Component id="optionsButton" min="-2" pref="140" max="-2" attributes="0"/>
                   <EmptySpace max="-2" attributes="0"/>
-                  <Component id="frameLabel" pref="314" max="32767" attributes="0"/>
+                  <Component id="helpButton" min="-2" pref="140" max="-2" attributes="0"/>
+                  <EmptySpace pref="365" max="32767" attributes="0"/>
+                  <Component id="prevButton" min="-2" pref="80" max="-2" attributes="0"/>
                   <EmptySpace max="-2" attributes="0"/>
-                  <Component id="startStopButton" min="-2" pref="140" max="-2" attributes="0"/>
+                  <Component id="startPauseButton" min="-2" pref="80" max="-2" attributes="0"/>
+                  <EmptySpace max="-2" attributes="0"/>
+                  <Component id="stopButton" min="-2" pref="80" max="-2" attributes="0"/>
+                  <EmptySpace max="-2" attributes="0"/>
+                  <Component id="nextButton" min="-2" pref="80" max="-2" attributes="0"/>
+                  <EmptySpace max="-2" attributes="0"/>
               </Group>
           </Group>
         </DimensionLayout>
@@ -79,18 +86,16 @@
           <Group type="103" groupAlignment="0" attributes="0">
               <Group type="102" alignment="0" attributes="0">
                   <EmptySpace max="-2" attributes="0"/>
-                  <Group type="103" groupAlignment="0" attributes="0">
-                      <Component id="frameLabel" max="32767" attributes="0"/>
-                      <Group type="102" attributes="0">
-                          <Group type="103" groupAlignment="3" attributes="0">
-                              <Component id="fileChooserButton" alignment="3" min="-2" max="-2" attributes="0"/>
-                              <Component id="settingsButton" alignment="3" min="-2" max="-2" attributes="0"/>
-                              <Component id="startStopButton" alignment="3" min="-2" max="-2" attributes="0"/>
-                          </Group>
-                          <EmptySpace min="0" pref="0" max="32767" attributes="0"/>
-                      </Group>
+                  <Group type="103" groupAlignment="3" attributes="0">
+                      <Component id="fileChooserButton" alignment="3" min="-2" max="-2" attributes="0"/>
+                      <Component id="optionsButton" alignment="3" min="-2" max="-2" attributes="0"/>
+                      <Component id="startPauseButton" alignment="3" min="-2" max="-2" attributes="0"/>
+                      <Component id="helpButton" alignment="3" min="-2" max="-2" attributes="0"/>
+                      <Component id="nextButton" alignment="3" min="-2" max="-2" attributes="0"/>
+                      <Component id="stopButton" alignment="3" min="-2" max="-2" attributes="0"/>
+                      <Component id="prevButton" alignment="3" min="-2" max="-2" attributes="0"/>
                   </Group>
-                  <EmptySpace max="-2" attributes="0"/>
+                  <EmptySpace max="32767" attributes="0"/>
               </Group>
           </Group>
         </DimensionLayout>
@@ -104,13 +109,13 @@
             <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="fileChooserButtonActionPerformed"/>
           </Events>
         </Component>
-        <Component class="javax.swing.JButton" name="settingsButton">
+        <Component class="javax.swing.JButton" name="optionsButton">
           <Properties>
-            <Property name="text" type="java.lang.String" value="Settings"/>
+            <Property name="text" type="java.lang.String" value="Options"/>
             <Property name="enabled" type="boolean" value="false"/>
           </Properties>
         </Component>
-        <Component class="javax.swing.JButton" name="startStopButton">
+        <Component class="javax.swing.JButton" name="startPauseButton">
           <Properties>
             <Property name="text" type="java.lang.String" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
               <Connection code="START" type="code"/>
@@ -121,10 +126,43 @@
             <Property name="enabled" type="boolean" value="false"/>
           </Properties>
           <Events>
-            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="startStopButtonActionPerformed"/>
+            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="startPauseButtonActionPerformed"/>
           </Events>
         </Component>
-        <Component class="javax.swing.JLabel" name="frameLabel">
+        <Component class="javax.swing.JButton" name="helpButton">
+          <Properties>
+            <Property name="text" type="java.lang.String" value="Help"/>
+          </Properties>
+          <Events>
+            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="helpButtonActionPerformed"/>
+          </Events>
+        </Component>
+        <Component class="javax.swing.JButton" name="nextButton">
+          <Properties>
+            <Property name="text" type="java.lang.String" value="Next"/>
+            <Property name="enabled" type="boolean" value="false"/>
+          </Properties>
+          <Events>
+            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="nextButtonActionPerformed"/>
+          </Events>
+        </Component>
+        <Component class="javax.swing.JButton" name="stopButton">
+          <Properties>
+            <Property name="text" type="java.lang.String" value="Stop"/>
+            <Property name="enabled" type="boolean" value="false"/>
+          </Properties>
+          <Events>
+            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="stopButtonActionPerformed"/>
+          </Events>
+        </Component>
+        <Component class="javax.swing.JButton" name="prevButton">
+          <Properties>
+            <Property name="text" type="java.lang.String" value="Prev"/>
+            <Property name="enabled" type="boolean" value="false"/>
+          </Properties>
+          <Events>
+            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="prevButtonActionPerformed"/>
+          </Events>
         </Component>
       </SubComponents>
     </Container>
